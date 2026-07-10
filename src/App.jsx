@@ -1,4 +1,5 @@
 import Camera from "./components/camera";
+import HandTracker from "./components/Handtracker";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <div className="flex justify-center">
         <div className="w-[900px] h-[520px] rounded-xl overflow-hidden bg-neutral-900 border border-neutral-700">
           <Camera />
+          <HandTracker />
         </div>
       </div>
     </div>
