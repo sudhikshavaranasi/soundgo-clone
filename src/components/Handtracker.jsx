@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { initializeHandDetector } from "../utils/handDetector";
 
-function HandTracker({webcamRef, isCameraReady}) {
+
+function HandTracker({webcamRef, isCameraReady, setLandmarks}) {
   useEffect(() => {
     if (!isCameraReady) return;
 
@@ -19,19 +20,13 @@ function HandTracker({webcamRef, isCameraReady}) {
         performance.now()
     );
 
-    if (results.landmarks.length > 0) {
-
-    console.log(results.landmarks[0]);}
-
+    setLandmarks(results.landmarks);
     requestAnimationFrame(detectHands);
 }
 
 detectHands();
 
       console.log(video);
-      const results = detector.detectForVideo(video,performance.now());
-
-      console.log(results);
 
       console.log("Detector Ready", detector);
     }
