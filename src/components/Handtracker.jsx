@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { initializeHandDetector } from "../utils/handDetector";
 import { calculateDistance } from "../utils/gestureDist";
+import { playNote } from "../audio/audioEngine";
+import { getNoteFromX } from "../utils/musicUtils";
 
 
-function HandTracker({webcamRef, isCameraReady, setHands}) {
+function HandTracker({webcamRef, isCameraReady, setHands, setSelectedNote, selectedNote}) {
   useEffect(() => {
     if (!isCameraReady) return;
 
@@ -38,8 +40,16 @@ hands.forEach((hand) => {
         indexTip
     );
 
-    if (distance < 0.05) {
-        console.log("Pinch");
+    if (hand.handedness === "Left") {
+
+        const note = getNoteFromX(indexTip.x);
+
+        setSelectedNote(note);
+
+        if (distance < 0.05) {
+            playNote(`${note}4`);
+        }
+
     }
 
 });
