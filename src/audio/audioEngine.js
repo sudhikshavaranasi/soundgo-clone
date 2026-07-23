@@ -24,3 +24,7 @@ export async function startAudio() {
 export function playNote(note) {
     synth.triggerAttackRelease(note, "8n");
 }
+
+export function playChord(notes){
+    synth.triggerAttackRelease(notes, "8n");
+}

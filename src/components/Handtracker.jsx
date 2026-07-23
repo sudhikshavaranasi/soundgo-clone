@@ -3,9 +3,12 @@ import { initializeHandDetector } from "../utils/handDetector";
 import { calculateDistance } from "../utils/gestureDist";
 import { playNote } from "../audio/audioEngine";
 import { getNoteFromX } from "../utils/musicUtils";
+import { getChordNotes } from "../utils/chordNotes";
+import { getAngle } from "../utils/angleUtils";
+import { getChordFromAngle } from "../utils/chordUtils";
+import { playChord } from "../audio/audioEngine";
 
-
-function HandTracker({webcamRef, isCameraReady, setHands, setSelectedNote, selectedNote}) {
+function HandTracker({webcamRef, isCameraReady, setHands, setSelectedNote, selectedNote, setSelectedChord, selectedChord}) {
     const wasPinching = useRef(false);
   useEffect(() => {
     if (!isCameraReady) return;
@@ -33,15 +36,16 @@ function HandTracker({webcamRef, isCameraReady, setHands, setSelectedNote, selec
 setHands(hands);
 hands.forEach((hand) => {
 
-    const thumbTip = hand.landmarks[4];
-    const indexTip = hand.landmarks[8];
-
-    const distance = calculateDistance(
-        thumbTip,
-        indexTip
-    );
+    
 
     if (hand.handedness === "Left") {
+        const thumbTip = hand.landmarks[4];
+        const indexTip = hand.landmarks[8];
+
+        const distance = calculateDistance(
+            thumbTip,
+            indexTip
+        );
 
         const note = getNoteFromX(indexTip.x);
 
@@ -49,9 +53,19 @@ hands.forEach((hand) => {
         const isPinching = distance < 0.05;
 
         if (isPinching && !wasPinching.current) {
-            playNote(`${note}4`);
+            const notes = getChordNotes(note, selectedChord);
+            playChord(notes);
         }
         wasPinching.current = isPinching;
+
+    }
+    if (hand.handedness == "Right"){
+        const indexTip = hand.landmarks[8];
+        const wrist = hand.landmarks[0];
+
+        const angle = getAngle(wrist, indexTip);
+        const chord = getChordFromAngle(angle);
+        setSelectedChord(chord);
 
     }
 

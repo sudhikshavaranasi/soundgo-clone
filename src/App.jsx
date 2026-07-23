@@ -10,11 +10,13 @@ function App() {
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [hands, setHands] = useState([]);
   const [selectedNote, setSelectedNote] = useState("C");
+  const [selectedChord, setSelectedChord] = useState("Major");
   return (
     
     <div className="min-h-screen bg-[#111111] text-white p-6">
       <h1 className="text-3xl font-semibold mb-6">
         SoundGo Clone
+        Selected Chord: {selectedChord}
       </h1>
       
       <div className="flex justify-center">
@@ -31,13 +33,17 @@ function App() {
       setHands={setHands}
       setSelectedNote = {setSelectedNote}
       selectedNote={selectedNote}
+      setSelectedChord = {setSelectedChord}
+      selectedChord={selectedChord}
     />
 
     <HandCanvas hands={hands} />
   </div>
 </div>
 <NoteSelector selectedNote={selectedNote} />
+
     </div>
+
   );
 }
 
